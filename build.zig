@@ -33,7 +33,8 @@ pub fn build(b: *std.Build) void {
     b.installArtifact(renderer);
 
     // `zig build run` runs the host, which will eventually spawn the renderer.
-    const run_host = b.addRunArtifact(host);
+    const run_host = b.addSystemCommand(&.{"./zig-out/bin/marauder-host"});
+    run_host.step.dependOn(b.getInstallStep());
     const run_step = b.step("run", "Run the host process");
     run_step.dependOn(&run_host.step);
 }
